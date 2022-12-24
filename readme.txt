@@ -1,8 +1,8 @@
-=== FastSpring for Easy Digital Downloads===
-Contributors: Magazine3
+=== FastSpring Integration For WP ===
+Contributors: Integrator
 Tags: fastspring, payments, world, easy digital downloads, edd
 Requires at least: 3.9.2
-Tested up to: 5.8
+Tested up to: 6.0
 Stable tag: 1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html

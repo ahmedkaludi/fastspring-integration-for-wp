@@ -172,8 +172,8 @@ function fsifwp_save_edd_subscription( $download_id , $post ){
         
 }
 
-add_action( 'wp_ajax_fastspring_save_order_data', 'fsifwp_edd_save_order_data_func' );
-add_action( 'wp_ajax_nopriv_fastspring_save_order_data', 'fsifwp_edd_save_order_data_func' ); 
+add_action( 'wp_ajax_fsifwp_edd_save_order_data', 'fsifwp_edd_save_order_data_func' );
+add_action( 'wp_ajax_nopriv_fsifwp_edd_save_order_data', 'fsifwp_edd_save_order_data_func' ); 
 
 function fsifwp_edd_save_order_data_func(){
                  
@@ -184,23 +184,13 @@ function fsifwp_edd_save_order_data_func(){
     $fs_security_nonce    =    $body_arr['fs_security_nonce']; 
     $order_reference      =    $body_arr['order_reference']; 
 
-    if ( ! is_user_logged_in() ) {
-        echo 'You must be logged in to purchase a subscription';die;
-    }
-            
-    $subs_db = new EDD_Subscriptions_DB;
-    $subs    = $subs_db->get_subscriptions( array( 'parent_payment_id' => $parent_payment_id ) );
+    // if ( ! is_user_logged_in() ) {
+    //     echo 'You must be logged in to purchase a subscription';die;
+    // }
 
-    if( $subs ) {
-
-        foreach( $subs as $key => $sub ) {
-
-            $sub->update( array( 'transaction_id' => $order_reference['items'][$key]['subscription'] ) );
-
-        }
-
-    }
-                                
+    if(!wp_verify_nonce($fs_security_nonce, 'fs_ajax_check_nonce')){
+        return;
+    }     
      if(!empty($order_reference['reference'])){
             $payment                 = new EDD_Payment( $parent_payment_id );
             $payment->transaction_id = $order_reference['reference'];

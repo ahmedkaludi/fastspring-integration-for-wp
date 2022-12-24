@@ -122,7 +122,7 @@ function fsifwp_edd_process_payment($purchase_data)
     }
     
     $customer_data      = fsifwp_get_edd_customer_data($purchase_data);
-    $mod_version        = get_plugin_data(plugin_dir_path(__FILE__) . 'fastspring-integration-for-wp.php')['Version'];
+    $mod_version        = FSIFWP_VERSION;
     $ajax_url           = admin_url( 'admin-ajax.php' ); 
     $fs_security_nonce  = wp_create_nonce('fs_ajax_check_nonce');
 
@@ -278,11 +278,35 @@ function fsifwp_edd_process_payment($purchase_data)
                 data-data-callback="dataCallback"
                 data-popup-closed="onPopupClose"
                 data-error-callback="errorCallback"		
+                data-popup-webhook-received="popupWebhookReceived"
                 >
             </script>
             <script>
         //Operation js functions starts here
        
+        function popupWebhookReceived(orderReference){
+          
+          if(orderReference){
+
+           var body = {"payment_id": '.esc_attr($order_no).', "fs_security_nonce": "'.esc_attr($fs_security_nonce).'", "order_reference": orderReference };
+
+           var xhttp = new XMLHttpRequest();
+           xhttp.open("POST", "'.esc_url($ajax_url).'?action=fsifwp_edd_save_order_data", true);                
+           xhttp.setRequestHeader("Content-Type", "application/json");               
+           xhttp.onreadystatechange = function() {
+
+             if (this.readyState == 4 && this.status == 200) {              
+                 console.log(JSON.parse(this.responseText));                                    
+             }
+             };
+
+           xhttp.send(JSON.stringify(body));
+           fastspring.builder.reset();
+
+          }
+
+       }
+
         function onPopupClose(orderReference){
                         
             if(orderReference){
@@ -290,38 +314,20 @@ function fsifwp_edd_process_payment($purchase_data)
             document.body.style.backgroundColor = "#7f7f7f";  
             document.getElementById("fs-lds-default").style.display = "inline-block";     
 
-            var xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "'.esc_attr($ajax_url).'?action=fastspring_validate_order&gateway_nonce='.esc_attr($fs_security_nonce).'&order_no='.esc_attr($order_no).'&fs_order_id="+orderReference.id, true);                
-            xhttp.setRequestHeader("Content-Type", "application/json");
-            xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-            
-                var result = JSON.parse(this.responseText);
-                if(result.status == "valid" ){
-                      window.location.replace(result.url);
-                }
-
-                if(result.status == "invalid" ){
-                    window.location.href = "' . esc_url($config_data['error_return_url']) . '";
-                }
-                
-            }
-            };
-
-            xhttp.send();
+            window.location.replace("'.edd_get_success_page_uri().'");
                 
             fastspring.builder.reset();
               
             }else{                
-                window.location.href = "' . esc_url($config_data['error_return_url']) . '";
+                window.location.href = "' . edd_get_checkout_uri() . '";
             }
-            
+          
         }
 
         function errorCallback (code, string) {
-            alert("Error: ", code, string);
-            window.location.href = "' . esc_url($config_data['error_return_url']) . '";
-        }
+          console.log("Error: ", code, string);
+          window.location.href = "' . edd_get_checkout_uri() . '";
+      }
 
         //Operation js functions ends here
 

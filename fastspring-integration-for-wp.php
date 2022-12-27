@@ -33,8 +33,8 @@ require_once FSIFWP_PLUGIN_DIR_PATH. 'includes/webhook.php';
 function fsifwp_register_fs_edd_payment_gateway($gateways){
 
     $gateways['fastspring'] = array(
-        'admin_label'    => 'FastSpring',
-        'checkout_label' => __('FastSpring', 'fastspring')
+        'admin_label'    => esc_htmlesc_html__('FastSpring', 'fastSpring-integration-for-wp'),
+        'checkout_label' => esc_htmlesc_html__('FastSpring', 'fastSpring-integration-for-wp')
     );
 
     return $gateways;
@@ -49,13 +49,12 @@ add_action('admin_notices', 'fsifwp_fs_edd_admin_notices');
 function fsifwp_fs_edd_admin_notices(){
 
     if (! is_plugin_active('easy-digital-downloads/easy-digital-downloads.php')) {
-        $message = '<b>' . __('Easy Digital Downloads Payment Gateway by FastSpring', 'fastSpring-integration-for-wp') . '</b> ' . __('add-on requires', 'fastSpring-integration-for-wp') . ' ' . '<a href="https://easydigitaldownloads.com" target="_new">' . __('Easy Digital Downloads', 'fastSpring-integration-for-wp') . '</a>' . ' ' . __('plugin. Please install and activate it.', 'fastSpring-integration-for-wp');
+          echo '<div id="notice" class="error"><p><b>'.esc_htmlesc_html__('Easy Digital Downloads Payment Gateway by FastSpring', 'fastSpring-integration-for-wp').'</b> '.esc_htmlesc_html__('add-on requires ', 'fastSpring-integration-for-wp').'<a href="https://easydigitaldownloads.com" target="_new">'.esc_htmlesc_html__('Easy Digital Downloads', 'fastSpring-integration-for-wp').'</a>'.' '.esc_htmlesc_html__('plugin. Please install and activate it.', 'fastSpring-integration-for-wp').'</p></div>';
     }
-    elseif (! function_exists('curl_init')) {
-        $message = '<b>' . __('Easy Digital Downloads Payment Gateway by FastSpring', 'fastSpring-integration-for-wp') . '</b> ' . __('requires ', 'fastSpring-integration-for-wp') . __('PHP CURL.', 'fastSpring-integration-for-wp') . '</a>' . ' ' . __(' Please install/enable php_curl!', 'fastSpring-integration-for-wp');
+    elseif (! function_exists('curl_init')) {        
+          echo '<div id="notice" class="error"><p><b>'.esc_htmlesc_html__('Easy Digital Downloads Payment Gateway by FastSpring', 'fastSpring-integration-for-wp').'</b> '.esc_htmlesc_html__('requires ', 'fastSpring-integration-for-wp').' '.esc_htmlesc_html__('PHP CURL.', 'fastSpring-integration-for-wp'). ' '.esc_htmlesc_html__(' Please install/enable php_curl!', 'fastSpring-integration-for-wp').'</p></div>';
     }
-
-    echo isset($message) ? '<div id="notice" class="error"><p>' . $message.  '</p></div>' : '';
+    
 }
 
 function fsifwp_get_edd_customer_data($purchase_data){
@@ -314,19 +313,19 @@ function fsifwp_edd_process_payment($purchase_data)
             document.body.style.backgroundColor = "#7f7f7f";  
             document.getElementById("fs-lds-default").style.display = "inline-block";     
 
-            window.location.replace("'.edd_get_success_page_uri().'");
+            window.location.replace("'.esc_url(edd_get_success_page_uri()).'");
                 
             fastspring.builder.reset();
               
             }else{                
-                window.location.href = "' . edd_get_checkout_uri() . '";
+                window.location.href = "' . esc_url(edd_get_checkout_uri()) . '";
             }
           
         }
 
         function errorCallback (code, string) {
           console.log("Error: ", code, string);
-          window.location.href = "' . edd_get_checkout_uri() . '";
+          window.location.href = "' . esc_url(edd_get_checkout_uri()) . '";
       }
 
         //Operation js functions ends here
@@ -367,6 +366,8 @@ function fsifwp_edd_process_payment($purchase_data)
           <div id="fs-lds-default"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
           </body>
         </html>';
+
+        //This is static html and whatever dynamic inside it have been escaped above.
         echo $html;
         exit;
     }
@@ -380,41 +381,41 @@ function fsifwp_edd_add_settings($settings)
     $fastspring_settings = array(
         array(
             'id'   => 'fastspring_settings',
-            'name' => '<strong>' . __('FastSpring', 'fastSpring-integration-for-wp') . '</strong>',
-            'desc' => __('Configure the FastSpring settings', 'fastSpring-integration-for-wp'),
+            'name' => '<strong>' . esc_html__('FastSpring', 'fastSpring-integration-for-wp') . '</strong>',
+            'desc' => esc_html__('Configure the FastSpring settings', 'fastSpring-integration-for-wp'),
             'type' => 'header'
         ),
         array(
             'id'   => 'title',
-            'name' => __('Title:', 'fastSpring-integration-for-wp'),
-            'desc' => __('This controls the title which the user sees during checkout.', 'fastSpring-integration-for-wp'),
+            'name' => esc_html__('Title:', 'fastSpring-integration-for-wp'),
+            'desc' => esc_html__('This controls the title which the user sees during checkout.', 'fastSpring-integration-for-wp'),
             'type' => 'text',
             'size' => 'regular'
         ),
         array(
             'id'   => 'description',
-            'name' => __('Description', 'fastSpring-integration-for-wp'),
+            'name' => esc_html__('Description', 'fastSpring-integration-for-wp'),
             'type' => 'textarea',
-            'desc' => __('This controls the description which the user sees during checkout.', 'fastSpring-integration-for-wp'),
+            'desc' => esc_html__('This controls the description which the user sees during checkout.', 'fastSpring-integration-for-wp'),
         ),
         array(
             'id'   => 'username',
-            'name' => __('User Name', 'fastspring'),
-            'desc' => __('The User name and password can be generated from "Integrations" section of FastSpring Dashboard. Use test or live for test or live mode.', 'fastSpring-integration-for-wp'),
+            'name' => esc_html__('User Name', 'fastspring'),
+            'desc' => esc_html__('The User name and password can be generated from "Integrations" section of FastSpring Dashboard. Use test or live for test or live mode.', 'fastSpring-integration-for-wp'),
             'type' => 'text',
             'size' => 'regular'
         ),
         array(
             'id'   => 'password',
-            'name' => __('Password', 'fastSpring-integration-for-wp'),
-            'desc' => __('The User name and password can be generated from "Integrations" section of FastSpring Dashboard. Use test or live for test or live mode.', 'fastSpring-integration-for-wp'),
+            'name' => esc_html__('Password', 'fastSpring-integration-for-wp'),
+            'desc' => esc_html__('The User name and password can be generated from "Integrations" section of FastSpring Dashboard. Use test or live for test or live mode.', 'fastSpring-integration-for-wp'),
             'type' => 'text',
             'size' => 'regular'
         ),
         array(
             'id'   => 'storefront',
-            'name' => __('Popup Data Storefront ', 'fastSpring-integration-for-wp'),
-            'desc' => __('The Popup Storefront URL can be got from "Storefronts" section of FastSpring Dashboard. Use test or live for test or live mode.', 'fastSpring-integration-for-wp'),
+            'name' => esc_html__('Popup Data Storefront ', 'fastSpring-integration-for-wp'),
+            'desc' => esc_html__('The Popup Storefront URL can be got from "Storefronts" section of FastSpring Dashboard. Use test or live for test or live mode.', 'fastSpring-integration-for-wp'),
             'type' => 'text',
             'size' => 'regular'
         )        

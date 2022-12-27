@@ -33,8 +33,8 @@ require_once FSIFWP_PLUGIN_DIR_PATH. 'includes/webhook.php';
 function fsifwp_register_fs_edd_payment_gateway($gateways){
 
     $gateways['fastspring'] = array(
-        'admin_label'    => esc_htmlesc_html__('FastSpring', 'fastSpring-integration-for-wp'),
-        'checkout_label' => esc_htmlesc_html__('FastSpring', 'fastSpring-integration-for-wp')
+        'admin_label'    => esc_html__('FastSpring', 'fastSpring-integration-for-wp'),
+        'checkout_label' => esc_html__('FastSpring', 'fastSpring-integration-for-wp')
     );
 
     return $gateways;
@@ -49,10 +49,10 @@ add_action('admin_notices', 'fsifwp_fs_edd_admin_notices');
 function fsifwp_fs_edd_admin_notices(){
 
     if (! is_plugin_active('easy-digital-downloads/easy-digital-downloads.php')) {
-          echo '<div id="notice" class="error"><p><b>'.esc_htmlesc_html__('Easy Digital Downloads Payment Gateway by FastSpring', 'fastSpring-integration-for-wp').'</b> '.esc_htmlesc_html__('add-on requires ', 'fastSpring-integration-for-wp').'<a href="https://easydigitaldownloads.com" target="_new">'.esc_htmlesc_html__('Easy Digital Downloads', 'fastSpring-integration-for-wp').'</a>'.' '.esc_htmlesc_html__('plugin. Please install and activate it.', 'fastSpring-integration-for-wp').'</p></div>';
+          echo '<div id="notice" class="error"><p><b>'.esc_html__('Easy Digital Downloads Payment Gateway by FastSpring', 'fastSpring-integration-for-wp').'</b> '.esc_html__('add-on requires ', 'fastSpring-integration-for-wp').'<a href="https://easydigitaldownloads.com" target="_new">'.esc_html__('Easy Digital Downloads', 'fastSpring-integration-for-wp').'</a>'.' '.esc_html__('plugin. Please install and activate it.', 'fastSpring-integration-for-wp').'</p></div>';
     }
     elseif (! function_exists('curl_init')) {        
-          echo '<div id="notice" class="error"><p><b>'.esc_htmlesc_html__('Easy Digital Downloads Payment Gateway by FastSpring', 'fastSpring-integration-for-wp').'</b> '.esc_htmlesc_html__('requires ', 'fastSpring-integration-for-wp').' '.esc_htmlesc_html__('PHP CURL.', 'fastSpring-integration-for-wp'). ' '.esc_htmlesc_html__(' Please install/enable php_curl!', 'fastSpring-integration-for-wp').'</p></div>';
+          echo '<div id="notice" class="error"><p><b>'.esc_html__('Easy Digital Downloads Payment Gateway by FastSpring', 'fastSpring-integration-for-wp').'</b> '.esc_html__('requires ', 'fastSpring-integration-for-wp').' '.esc_html__('PHP CURL.', 'fastSpring-integration-for-wp'). ' '.esc_html__(' Please install/enable php_curl!', 'fastSpring-integration-for-wp').'</p></div>';
     }
     
 }

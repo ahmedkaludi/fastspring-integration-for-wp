@@ -171,9 +171,9 @@ function fsifwp_edd_process_payment($purchase_data)
 
     if (!$errors)
     {
-        $html = '
-        <!doctype html>
-        <html>
+        
+      echo '<!doctype html>
+          <html>
           <head>
             <title>FastSpring</title>
             <meta name="viewport" content="user-scalable=no,width=device-width,initial-scale=1,maximum-scale=1">
@@ -365,10 +365,7 @@ function fsifwp_edd_process_payment($purchase_data)
           <body>
           <div id="fs-lds-default"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
           </body>
-        </html>';
-
-        //This is static html and whatever dynamic inside it have been escaped above.
-        echo $html;
+        </html>';        
         exit;
     }
 }

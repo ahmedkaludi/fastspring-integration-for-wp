@@ -123,8 +123,8 @@ function fsifwp_webhook_callback( \WP_REST_Request $req ) {
                             global $wpdb;
 
                             $table_name = $wpdb->prefix . "fsifwp_edd_order_reference"; 
-                            $status     = $value['data']['completed'];                                                    
-                            $wpdb->insert($table_name, array('status' => $status, 'transaction_id' => $fs_order_id) ); 
+                            $status     = $value['data']['completed'];  
+                            $wpdb->insert($table_name, array('status' => sanitize_text_field($status), 'transaction_id' => sanitize_text_field($fs_order_id)) ); 
 
                         }
                     }

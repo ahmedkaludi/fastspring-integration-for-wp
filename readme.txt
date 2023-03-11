@@ -1,5 +1,5 @@
 === FastSpring Integration For WP ===
-Contributors: Integrator
+Contributors: Integratordev
 Tags: fastspring, payments, world, easy digital downloads, edd
 Requires at least: 3.9.2
 Tested up to: 6.1.1

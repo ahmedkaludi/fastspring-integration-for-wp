@@ -5,7 +5,7 @@ Description: FastSpring gateway for any wordpress stores and forms
 Version: 1.0
 Text Domain: fastSpring-integration-for-wp
 Domain Path: /languages
-Author: Integrator
+Author: Integratordev
 Author URI: https://integrator.dev
 Donate link: https://www.paypal.me/Kaludi/25
 License: GPLv2 or later

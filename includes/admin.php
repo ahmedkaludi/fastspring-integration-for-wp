@@ -100,7 +100,10 @@ function fsifwp_save_edd_subscription( $download_id , $post ){
         $prices = edd_get_variable_prices($download_id);
         
         foreach($prices as $value){
-                        
+                       
+            $period        = '';
+            $period_length = 0;
+
             if(isset($value['period'])){
 
                 $period        = 'year';
